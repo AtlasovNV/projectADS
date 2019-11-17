@@ -1,0 +1,13 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- Login Form -->
+        <form style="margin: auto;margin-top: 150px;width: 700px" action="{% url 'authapp:login' %}" method="post">
+        <!-- потом главное не забыть доделать стили -->
+            {% csrf_token %}
+            {{ login_form.as_p}}
+            <input type="submit" class="fadeIn" value="Log In">
+        </form>
+
+{% endblock %}
