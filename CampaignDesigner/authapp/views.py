@@ -16,7 +16,7 @@ def login(request):
         user = auth.authenticate(username=username, password=password)
         if user and user.is_active:
             auth.login(request, user)
-            return HttpResponseRedirect(reverse('main'))
+            return HttpResponseRedirect(reverse('mainapp:index'))
 
     context = {'title': title, 'login_form': login_form}
     return render(request, 'authapp/login.html', context)
@@ -24,7 +24,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return HttpResponseRedirect(reverse('main'))
+    return HttpResponseRedirect(reverse('mainapp:index'))
 
 
 def registration(request):
@@ -34,7 +34,7 @@ def registration(request):
         register_form = UserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             register_form.save()
-            return HttpResponseRedirect(reverse('authapp:login'))
+            return HttpResponseRedirect(reverse('main'))
     else:
         register_form = UserRegisterForm()
 

@@ -7,8 +7,16 @@
         <!-- потом главное не забыть доделать стили -->
             {% csrf_token %}
             {{ login_form.as_p}}
-            <input type="submit" value="Войти">
-            <input type="submit" value="Регистрация">
-            <input type="submit" value="Забыли пароль">
+            <button class="btn btn-primary btn-block">
+                <a href="{% url 'mainapp:index' %}" style="color: white">
+                    Войти
+                </a>
+            </button>
+
+            <button class="btn btn-primary btn-block">
+                <a href="{% url 'authapp:registration' %}" style="color: white">
+                    Зарегистрироваться
+                </a>
+            </button>
         </form>
 {% endblock %}
