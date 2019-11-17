@@ -53,7 +53,11 @@
               </li>
             </ul>
           </li>
-          <li><a href="{% url 'authapp:login' %}">Войти</a></li>
+          {% if user.is_authenticated %}
+             <li><a href="{% url 'authapp:logout' %}">Выход</a></li>
+          {% else %}
+            <li><a href="{% url 'authapp:login' %}">Войти</a></li>
+          {% endif %}
         </ul>
       </nav><!-- .main-nav -->
     </div>
