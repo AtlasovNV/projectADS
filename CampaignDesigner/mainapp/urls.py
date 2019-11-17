@@ -8,5 +8,4 @@ urlpatterns = [
     path('', mainapp.main, name='index'),
     path('first/', mainapp.first_page, name='first_page'),
     path('second/', mainapp.second_page, name='second_page'),
-    path('first/headingediting', mainapp.headingediting, name='first'),
 ]

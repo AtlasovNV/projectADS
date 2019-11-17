@@ -3,7 +3,7 @@ import xlsxwriter
 # Create a workbook and add a worksheet.
 
 
-def savelxs():
+def savelxs(frase):
     workbook = xlsxwriter.Workbook('Рекламная кампания Яндекс Директ.xlsx')
     worksheet = workbook.add_worksheet()
 
@@ -29,8 +29,8 @@ def savelxs():
     plus = '+'
     minus = '-'
 
-    namegroup = 'namegroup'             # название группы он же ключ указывает юзер
-    frase = 'frase'                     # фраза она же заголовок и название группы указывает функция
+    #namegroup = 'namegroup'             # название группы он же ключ указывает юзер
+    #frase = 'frase'                     # фраза она же заголовок и название группы указывает функция
     header1 = 'header1'                 # заголов 1 он же ключ и название группы указывает функция
     header2 = 'header2'                 # заголов 2 он же часть заголовка 1, если больше 35 символов или указанный юзер
     text = 'text'                       # текст объявления указывает юзер
@@ -46,8 +46,7 @@ def savelxs():
 
     # Some data we want to write to the worksheet.
     expenses = (
-        [minus, plus, namegroup, frase, header1, header2, text, link, sangezeigtlink, bewerten, region, headerfastlink,
-         textfastlink, linkfastkink, verfeinerungen],
+        [minus, plus, frase],
     )
 
     # Start from the first cell below the headers.
@@ -55,23 +54,23 @@ def savelxs():
     col = 0
 
     # Iterate over the data and write it out row by row.
-    for minus, plus, namegroup, frase, header1, header2, text, link, sangezeigtlink, bewerten, region, headerfastlink,\
-        textfastlink, linkfastkink, verfeinerungen in (expenses):
+    for minus, plus, frase in (expenses):
 
         worksheet.write(row, col, minus)    #записывает минус через строчку
         worksheet.write(row + 1, col, plus) #записывает плюс через строчку
-        worksheet.write(row, col + 1, namegroup) #запись без пропусков столбца
+        #worksheet.write(row, col + 1, namegroup) #запись без пропусков столбца
         worksheet.write(row, col + 2, frase)
-        worksheet.write(row, col + 3, header1)
-        worksheet.write(row, col + 4, header2)
-        worksheet.write(row, col + 5, text)
-        worksheet.write(row, col + 6, link)
-        worksheet.write(row, col + 7, sangezeigtlink)
-        worksheet.write(row, col + 8, bewerten)
-        worksheet.write(row, col + 9, region)
-        worksheet.write(row, col + 10, headerfastlink)
-        worksheet.write(row, col + 11, textfastlink)
-        worksheet.write(row, col + 12, linkfastkink)
+
+        # worksheet.write(row, col + 3, header1)
+        # worksheet.write(row, col + 4, header2)
+        # worksheet.write(row, col + 5, text)
+        # worksheet.write(row, col + 6, link)
+        # worksheet.write(row, col + 7, sangezeigtlink)
+        # worksheet.write(row, col + 8, bewerten)
+        # worksheet.write(row, col + 9, region)
+        # worksheet.write(row, col + 10, headerfastlink)
+        # worksheet.write(row, col + 11, textfastlink)
+        # worksheet.write(row, col + 12, linkfastkink)
         row += 1                            #запись без пропусков строки
 
 
@@ -79,4 +78,3 @@ def savelxs():
 
     return
 
-savelxs()

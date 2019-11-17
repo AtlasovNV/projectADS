@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, request
 from django.shortcuts import render
-
+import xlwt
 from mainapp.savexls import savelxs
 from .forms import KeyWordsForm
 
@@ -11,18 +11,25 @@ def main(request):
 
 
 def first_page(request):
-    form = KeyWordsForm(request.POST)
+    if request.method == 'POST':
+        form = KeyWordsForm(request.POST)
+
+        if form.is_valid():
+            frase = form.cleaned_data['keywords']
+            # new_keywords = keywords.replace(' ', '-')               # замена пробелов на минус
+            # s = [s.strip('-') for s in new_keywords.splitlines()]   # создание списка с переносом строки
+            # str_list = list(filter(None, s))
+            # for i, frase in enumerate(str_list):  # запись ввода пользователя в таблицу
+            #     i += 1
+            #     print(frase)
+            savelxs(frase)
+    else:
+        form = KeyWordsForm()
 
     return render(request, 'mainapp/first_page.html', {'form': form})
 
 
-def headingediting(request):
-    frase = KeyWordsForm(request.POST)
 
-    '''Считаем количество символов в заголовках. Если больше 35, то переносим во второй заголовок часть ключей, если мсеньше оставляем'''
-
-    
-    return render(request, 'mainapp/headingediting.html', {'form': frase})
 
 
 def second_page(request):
