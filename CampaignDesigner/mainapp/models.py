@@ -1,8 +1,20 @@
 from django.db import models
+from django.conf import settings
 
 
 class DirectCompaignDesigner (models.Model):
-    additional_ad = models.CharField(max_length=1)
+    PLUS = '+'
+    MINUS = '-'
+
+    ADDITIONAL_AD_CHOICES = (
+        (MINUS, '-'),
+        (PLUS, '+'),
+    )
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    additional_ad = models.CharField(max_length=1,
+                                     choices=ADDITIONAL_AD_CHOICES)
     namegroup = models.CharField(max_length=100)
     frase = models.CharField(max_length=100)
     header1 = models.CharField(max_length=50)
