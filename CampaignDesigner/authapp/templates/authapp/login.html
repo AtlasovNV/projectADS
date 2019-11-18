@@ -3,8 +3,7 @@
 
 {% block content %}
         <!-- Login Form -->
-        <form style="margin: 150px auto auto;width: 700px" action="{% url 'authapp:login' %}" method="post">
-        <!-- потом главное не забыть доделать стили -->
+        <form class="auth_form" action="{% url 'authapp:login' %}" method="post">
             {% csrf_token %}
             {{ login_form.as_p}}
             <button class="btn btn-primary btn-block">
