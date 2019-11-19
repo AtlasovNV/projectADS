@@ -34,7 +34,7 @@ def registration(request):
         register_form = UserRegisterForm(request.POST, request.FILES)
         if register_form.is_valid():
             register_form.save()
-            return HttpResponseRedirect(reverse('main'))
+            return HttpResponseRedirect(reverse('authapp:login'))
     else:
         register_form = UserRegisterForm()
 
