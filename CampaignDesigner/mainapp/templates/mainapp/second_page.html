@@ -3,14 +3,29 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Second page</title>
+    <title>
+        {% block title %}
+            {{ title|capfirst }}
+        {% endblock %}
+    </title>
 </head>
 <body>
-    <h1>Шаг 2. Отредлактируйте шаблон объявления</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Отправить">
-    </form>
+    <h1>Шаг 2. Отредактируйте шаблон объявления</h1>
+    <div>
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="form-control" type="submit" value="Перейти к скачиванию кампании">
+        </form>
+    </div>
+{#    <h3>Быстрые ссылки</h3>#}
+{#    <div>#}
+{#        <form class="form-horizontal" method="post" enctype="multipart/form-data">#}
+{#            {% csrf_token %}#}
+{#            {{ fasturls_form.as_p }}#}
+{#        </form>#}
+{#        <input class="form-control" type="submit" value="Перейти к скачиванию кампании">#}
+{#    </div>#}
+
 </body>
 </html>

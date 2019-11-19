@@ -22,6 +22,15 @@ class Template(models.Model):
     is_active = models.BooleanField(verbose_name='активен ли шаблон', default=True, db_index=True)
     created = models.DateTimeField(verbose_name='создан', auto_now_add=True)
     updated = models.DateTimeField(verbose_name='обновлен', auto_now=True)
+    fast_url_1 = models.CharField(verbose_name='Быстрая ссылка 1', max_length=255, blank=True, null=True)
+    description_1 = models.CharField(verbose_name='Описание 1-й ссылки', max_length=255, blank=True, null=True)
+    fast_url_2 = models.CharField(verbose_name='Быстрая ссылка 2', max_length=255, blank=True, null=True)
+    description_2 = models.CharField(verbose_name='Описание 2-й ссылки', max_length=255, blank=True, null=True)
+    fast_url_3 = models.CharField(verbose_name='Быстрая ссылка 3', max_length=255, blank=True, null=True)
+    description_3 = models.CharField(verbose_name='Описание 3-й ссылки', max_length=255, blank=True, null=True)
+    fast_url_4 = models.CharField(verbose_name='Быстрая ссылка 4', max_length=255, blank=True, null=True)
+    description_4 = models.CharField(verbose_name='Описание 4-й ссылки', max_length=255, blank=True, null=True)
+    refinements = models.TextField(verbose_name='Уточнения', max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f'{self.headline_1}' if self.headline_1 else ''
