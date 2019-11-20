@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 
 
-class DirectCompaignDesigner (models.Model):
+class CompaignFrases (models.Model):
     PLUS = '+'
     MINUS = '-'
 
@@ -32,7 +32,7 @@ class DirectCompaignDesigner (models.Model):
     textfstlink_2 = models.CharField(max_length=60, blank=True)
     textfstlink_3 = models.CharField(max_length=60, blank=True)
     textfstlink_4 = models.CharField(max_length=60, blank=True)
-    linkfastlink_1  = models.URLField(max_length=200, blank=True)
+    linkfastlink_1 = models.URLField(max_length=200, blank=True)
     linkfastlink_2 = models.URLField(max_length=200, blank=True)
     linkfastlink_3 = models.URLField(max_length=200, blank=True)
     linkfastlink_4 = models.URLField(max_length=200, blank=True)
