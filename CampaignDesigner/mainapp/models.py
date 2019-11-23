@@ -2,40 +2,9 @@ from django.db import models
 from django.conf import settings
 
 
-class Campaign (models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    created = models.DateTimeField(verbose_name='создана', auto_now_add=True)
-    update = models.DateTimeField(verbose_name='обновлена', auto_now=True)
-
-
-class Frases (models.Model):
-    PLUS = '+'
-    MINUS = '-'
-
-    ADDITIONAL_AD_CHOICES = (
-        (MINUS, '-'),
-        (PLUS, '+'),
-    )
-
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    additional_ad = models.CharField(max_length=1,
-                                     choices=ADDITIONAL_AD_CHOICES)
-    name_group = models.ForeignKey(GroupName, on_delete=models.CASCADE)
-    frase = models.CharField(max_length=100)
-    headers = models.ForeignKey(Header, on_delete=models.CASCADE)
-    shared_data = models.ForeignKey(SharedDataGroup, on_delete=models.CASCADE)
-    region = models.ForeignKey(Regions, on_delete=models.CASCADE)
-    fast_link = models.ForeignKey(FastLink, on_delete=models.CASCADE)
-
-
 class Header (models.Model):
     header1 = models.CharField(max_length=50)
     header2 = models.CharField(max_length=40)
-
-
-class GroupName(models.Model):
-    name_group = models.CharField(max_length=100)
 
 
 class SharedDataGroup(models.Model):
@@ -66,3 +35,34 @@ class FastLink(models.Model):
     verfeinerungen_2 = models.CharField(max_length=25, blank=True)
     verfeinerungen_3 = models.CharField(max_length=25, blank=True)
     verfeinerungen_4 = models.CharField(max_length=25, blank=True)
+
+
+class Campaign (models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
+    created = models.DateTimeField(verbose_name='создана', auto_now_add=True)
+    update = models.DateTimeField(verbose_name='обновлена', auto_now=True)
+
+
+class GroupName(models.Model):
+    name_group = models.CharField(max_length=100)
+
+
+class Frases (models.Model):
+    PLUS = '+'
+    MINUS = '-'
+
+    ADDITIONAL_AD_CHOICES = (
+        (MINUS, '-'),
+        (PLUS, '+'),
+    )
+
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    additional_ad = models.CharField(max_length=1,
+                                     choices=ADDITIONAL_AD_CHOICES)
+    name_group = models.ForeignKey(GroupName, on_delete=models.CASCADE)
+    frase = models.CharField(max_length=100)
+    headers = models.ForeignKey(Header, on_delete=models.CASCADE)
+    shared_data = models.ForeignKey(SharedDataGroup, on_delete=models.CASCADE)
+    region = models.ForeignKey(Regions, on_delete=models.CASCADE)
+    fast_link = models.ForeignKey(FastLink, on_delete=models.CASCADE)
