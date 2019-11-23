@@ -23,29 +23,38 @@ def second_page(request):
     if request.method == "POST":
         form = KeyWordsForm(request.POST)
         if form.is_valid():
-            keywords = form.cleaned_data['keywords']
-            cross_keywords = keywords.replace(' ', '-')
-            split_cross_keywords_list = [s.strip('-') for s in cross_keywords.splitlines()]
-            split_upper_keywords_list = [s.strip(' ') for s in keywords.splitlines()]
+            keywords_str = form.cleaned_data['keywords']
+            uncommon_keywords = []
+            negative_keywords = []
+            keywords_list = keywords_str.split()
+            keywords_split = [keyword.strip() for keyword in keywords_str.splitlines()]
 
-            cross_keywords_list = list(filter(None, split_cross_keywords_list))
-            upper_keywords_list = list(filter(None, split_upper_keywords_list))
+            keywords_split = list(filter(None, keywords_split))             # список ключевых слов по строчкам
+            keywords_list = list(filter(None, keywords_list))               # список слов из ключевых слов
+            upper_keywords = [keyword.capitalize() for keyword in keywords_split]
 
-            upper_keywords = [i.capitalize() for i in upper_keywords_list]
+            for keyword in keywords_list:
+                if keyword not in uncommon_keywords:
+                    uncommon_keywords.append(keyword)
+
+            for keyword in keywords_split:
+                negative_keywords.append("{} {}".format(keyword, " ".join("-" + j for j in uncommon_keywords if j.lower() not in keyword.lower())))
 
             wb = xlwt.Workbook(encoding='utf-8')
             ws = wb.add_sheet('Sheet1')
-            columns = ['Фразы с минус словами', ]  # титульные колонки
+            columns = ['Фразы с минус словами', ]                           # титульные колонки
             row_num = 0
             for col_num in range(len(columns)):
-                ws.write(row_num, col_num, columns[col_num])  # запись титульников в таблицу
-            for i, e in enumerate(cross_keywords_list):  # запись ввода пользователя в таблицу
+                ws.write(row_num, col_num, columns[col_num])                # запись титульников в таблицу
+            for i, e in enumerate(negative_keywords):                       # запись минус слов в таблицу
                 ws.write(i + 1, 0, e)
             name = "spreadsheet.xls"
             wb.save(name)
     else:
         return HttpResponseRedirect(reverse('main:first_page'))
 
-    context = {"upper_keywords": upper_keywords}
+    context = {
+        "upper_keywords": upper_keywords,
+    }
 
     return render(request, 'mainapp/second_page.html', context)
