@@ -1,0 +1,12 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+                <form style="margin: 150px auto auto;width: 700px" action="{% url 'authapp:registration' %}" method="post"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ register_form.as_p }}
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-block">Создать аккаунт</button>
+                </form>
+{% endblock %}

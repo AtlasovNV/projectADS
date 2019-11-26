@@ -721,3 +721,9 @@ button[type="submit"] {
     margin-bottom: 25px;
   }
 }
+
+/* Authorization */
+.auth_form {
+  margin: 150px auto auto;
+  width: 700px;
+}
