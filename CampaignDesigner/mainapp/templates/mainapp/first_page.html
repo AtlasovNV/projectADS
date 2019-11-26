@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>First page</title>
-</head>
-
-<body>
-    <form action="" method="post">
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <form action="{% url 'main:second_page' %}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Отправить">
     </form>
-</body>
-
-</html>
+{% endblock %}
