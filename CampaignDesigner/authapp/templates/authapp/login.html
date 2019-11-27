@@ -1,0 +1,21 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+        <!-- Login Form -->
+        <form class="auth_form" action="{% url 'authapp:login' %}" method="post">
+            {% csrf_token %}
+            {{ login_form.as_p}}
+            <button class="btn btn-primary btn-block">
+                <a href="{% url 'mainapp:index' %}" style="color: white">
+                    Войти
+                </a>
+            </button>
+
+            <button class="btn btn-primary btn-block">
+                <a href="{% url 'authapp:registration' %}" style="color: white">
+                    Зарегистрироваться
+                </a>
+            </button>
+        </form>
+{% endblock %}
