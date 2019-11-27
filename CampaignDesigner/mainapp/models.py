@@ -2,6 +2,18 @@ from django.db import models
 from django.conf import settings
 
 
+class Campaign (models.Model):
+    # user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    #                          on_delete=models.CASCADE)
+    user = models.CharField(max_length=10)
+    created = models.DateTimeField(verbose_name='создана', auto_now_add=True)
+    update = models.DateTimeField(verbose_name='обновлена', auto_now=True)
+
+
+class GroupName(models.Model):
+    name_group = models.CharField(max_length=100, blank=True)
+
+
 class Header (models.Model):
     header1 = models.CharField(max_length=50)
     header2 = models.CharField(max_length=40)
@@ -37,17 +49,6 @@ class FastLink(models.Model):
     verfeinerungen_4 = models.CharField(max_length=25, blank=True)
 
 
-class Campaign (models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    created = models.DateTimeField(verbose_name='создана', auto_now_add=True)
-    update = models.DateTimeField(verbose_name='обновлена', auto_now=True)
-
-
-class GroupName(models.Model):
-    name_group = models.CharField(max_length=100)
-
-
 class Frases (models.Model):
     PLUS = '+'
     MINUS = '-'
@@ -60,9 +61,15 @@ class Frases (models.Model):
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     additional_ad = models.CharField(max_length=1,
                                      choices=ADDITIONAL_AD_CHOICES)
-    name_group = models.ForeignKey(GroupName, on_delete=models.CASCADE)
     frase = models.CharField(max_length=100)
-    headers = models.ForeignKey(Header, on_delete=models.CASCADE)
-    shared_data = models.ForeignKey(SharedDataGroup, on_delete=models.CASCADE)
-    region = models.ForeignKey(Regions, on_delete=models.CASCADE)
-    fast_link = models.ForeignKey(FastLink, on_delete=models.CASCADE)
+    region = models.ForeignKey('Regions', on_delete=models.CASCADE,
+                               null=True)
+    name_group = models.ForeignKey('GroupName', on_delete=models.CASCADE,
+                                   null=True)
+    headers = models.ForeignKey('Header', on_delete=models.CASCADE,
+                                null=True)
+    shared_data_group = models.ForeignKey('SharedDataGroup',
+                                          on_delete=models.CASCADE,
+                                          null=True)
+    fast_link = models.ForeignKey('FastLink', on_delete=models.CASCADE,
+                                  null=True)
