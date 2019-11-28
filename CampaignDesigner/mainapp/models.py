@@ -8,12 +8,12 @@ from django.db.models.signals import post_save
 class Template(models.Model):
     """ Класс Шаблона объявления """
     class Meta:
-        # ordering = ('-is_active', 'sort', 'name')
+        ordering = ('updated', 'created')
         verbose_name = 'Шаблон'
         verbose_name_plural = 'Шаблоны'
 
     keywords = models.CharField(verbose_name='Ключевые слова', max_length=255, blank=False, null=False, default='#')
-    url = models.CharField(verbose_name='Ссылка на сайт', max_length=255, blank=False, null=False, default='#')
+    url = models.CharField(verbose_name='Ссылка на сайт', help_text='ТЕСТ ТЕСТ', max_length=255, blank=False, null=False, default='#')
     displayed_url = models.CharField(verbose_name='Отображаемая ссылка', max_length=255, blank=False, null=False, default='#')
     headline_1 = models.CharField(verbose_name='Первый заголовок', max_length=35)
     headline_2 = models.CharField(verbose_name='Второй заголовок', max_length=35, default='Посмотрите на сайте!')
@@ -41,3 +41,12 @@ class Template(models.Model):
         else:
             self.is_active = False
             self.save()
+
+    # Убираем из каталога неактивные шаблоны
+    @staticmethod
+    def get_active():
+        return Template.objects.filter(is_active=True)
+
+    @staticmethod
+    def get_all():
+        return Template.objects.all()

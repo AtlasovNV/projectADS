@@ -122,3 +122,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Mac
+.idea
+run.sh
+run.bat
+**/migrations
+**/__pycache__
+.idea/
+.idea/animals_helper.iml
+.idea/misc.xml
+.idea/workspace.xml

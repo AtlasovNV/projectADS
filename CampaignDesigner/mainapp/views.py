@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from .forms import KeyWordsForm
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.views import generic
 from mainapp.models import Template
 from mainapp.forms import TemplateCreateForm
@@ -39,7 +39,7 @@ def first_page(request):
     return render(request, 'mainapp/first_page.html', {'form': form})
 
 
-class TemplateCreate(CreateView):
+class TemplateCreateView(CreateView):
     """Создание нового шаблона"""
     model = Template
     form_class = TemplateCreateForm
@@ -47,12 +47,11 @@ class TemplateCreate(CreateView):
     success_url = reverse_lazy('main:second_page')
 
     # @method_decorator(user_passes_test(lambda x: x.is_superuser))
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(TemplateCreateView, self).get_context_data(**kwargs)
         context['title'] = 'Создание шаблона'
         return context
-
 
