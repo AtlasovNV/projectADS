@@ -3,9 +3,8 @@ from django.conf import settings
 
 
 class Campaign (models.Model):
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL,
-    #                          on_delete=models.CASCADE)
-    user = models.CharField(max_length=10)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='создана', auto_now_add=True)
     update = models.DateTimeField(verbose_name='обновлена', auto_now=True)
 
