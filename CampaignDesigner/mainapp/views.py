@@ -58,3 +58,11 @@ def first_page(request, pk):
 
 def second_page(request, pk):
     return render(request, 'mainapp/second_page.html')
+
+
+def third_page(request, pk):
+    pass
+
+
+def fourth_page(request, pk):
+    pass
