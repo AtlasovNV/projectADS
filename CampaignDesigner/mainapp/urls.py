@@ -12,7 +12,7 @@ urlpatterns = [
     path('campaign/create/<int:pk>/second/', mainapp.second_page,
          name='second_page'),
     path('campaign/create/<int:pk>/third/', mainapp.third_page,
-         name='second_page'),
+         name='third_page'),
     path('campaing/<int:pk>/download/', mainapp.fourth_page,
          name='foutrh_page'),
 ]

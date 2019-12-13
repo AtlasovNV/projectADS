@@ -16,7 +16,7 @@ def campaign_create(request):
     new_campaign = Campaign(user=request.user)
     new_campaign.save()
     # перенаправляем на первую страницу и передаем id кампании
-    return HttpResponseRedirect(reverse('main:first_page',
+    return HttpResponseRedirect(reverse('mainapp:first_page',
                                         args=[new_campaign.id]))
 
 
@@ -48,12 +48,15 @@ def first_page(request, pk):
                 new_frase = Frases(campaign=campaign)
                 new_frase.frase = keyword
                 new_frase.save()
-
-            return HttpResponseRedirect(reverse('main:second_page', args=[pk]))
+            print('3')
+            return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
     else:
         form = KeyWordsForm()
-
-    return render(request, 'mainapp/first_page.html', {'form': form})
+    content = {
+        'form': form,
+        'pk': pk,
+    }
+    return render(request, 'mainapp/first_page.html', content)
 
 
 def second_page(request, pk):

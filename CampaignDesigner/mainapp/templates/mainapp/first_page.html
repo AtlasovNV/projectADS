@@ -5,7 +5,7 @@
     <br>
     <br>
     <br>
-    <form action="{% url 'main:second_page' %}" method="post">
+    <form action="{% url 'mainapp:first_page' pk%}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Отправить">
