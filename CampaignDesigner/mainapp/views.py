@@ -4,6 +4,10 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .forms import KeyWordsForm
 from .models import Campaign, Frases
+from django.views.generic import CreateView
+from mainapp.models import Template
+from mainapp.forms import TemplateCreateForm
+from django.urls import reverse_lazy
 import xlwt
 
 
@@ -63,8 +67,21 @@ def second_page(request, pk):
     return render(request, 'mainapp/second_page.html')
 
 
-def third_page(request, pk):
-    pass
+class TemplateCreateView(CreateView):
+    """Создание нового шаблона"""
+    model = Template
+    form_class = TemplateCreateForm
+    template_name = 'mainapp/second_page.html'
+    success_url = reverse_lazy('main:second_page')
+
+    # @method_decorator(user_passes_test(lambda x: x.is_superuser))
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(TemplateCreateView, self).get_context_data(**kwargs)
+        context['title'] = 'Создание шаблона'
+        return context
 
 
 def fourth_page(request, pk):
