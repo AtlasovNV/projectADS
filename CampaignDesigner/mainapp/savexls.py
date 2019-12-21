@@ -4,7 +4,7 @@ frases = Frases.objects.filter(campaign__pk=1)
 
 
 def savexls(self):
-    workbook = xlsxwriter.Workbook('Рекламная кампания Яндекс Директ.xlsx')
+    workbook = xlsxwriter.Workbook('static/campaign/Рекламная кампания Яндекс Директ.xlsx')
     worksheet = workbook.add_worksheet()
 
     # Add a bold format to use to highlight cells.

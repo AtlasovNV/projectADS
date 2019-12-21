@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +7,7 @@
 </head>
 <body class="container">
     <h2>Рекламная кампания</h2>
-    <a href="">Скачать</a>
+    <a href='{% static "campaign/Рекламная кампания Яндекс Директ.xlsx" %}' download>Скачать</a>
     <table>
         <tr><th>Доп. объявления</th><th>Название группы</th><th>Фразы</th><th>Заголовок 1</th><th>Заголовок 2</th>
             <th>Объявления</th><th>Ссылка</th><th>Ставка</th><th>Отображаемая ссылка</th><th>Регион</th>
