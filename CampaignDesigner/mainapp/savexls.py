@@ -1,10 +1,10 @@
 import xlsxwriter
 from .models import Frases
-frases = Frases.objects.filter(campaign__pk=1)
 
 
-def savexls(self):
-    workbook = xlsxwriter.Workbook('static/campaign/Рекламная кампания Яндекс Директ.xlsx')
+def savexls(pk):
+    frases = Frases.objects.filter(campaign__pk=pk)
+    workbook = xlsxwriter.Workbook(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx')
     worksheet = workbook.add_worksheet()
 
     # Add a bold format to use to highlight cells.

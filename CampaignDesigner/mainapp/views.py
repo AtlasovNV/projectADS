@@ -1,10 +1,15 @@
+import mimetypes
+import os
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+
+from .savexls import savexls
 from .forms import KeyWordsForm, FastLinkAndOther
 from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions
-import xlsxwriter
+
 
 
 def main(request):
@@ -142,3 +147,17 @@ def third_page(request, pk):
 def fourth_page(request, pk):
     return render(request, 'mainapp/fourth_page.html', {'pk': pk})
 
+
+def download_xls(request, pk):
+    savexls(pk)
+    fp = open(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx', "rb")
+    response = HttpResponse(fp.read())
+    fp.close()
+    file_type = mimetypes.guess_type(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx')
+    if file_type is None:
+        file_type = 'application/octet-stream'
+    response['Content-Type'] = file_type
+    response['Content-Length'] = str(os.stat(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx').st_size)
+    response['Content-Disposition'] = "attachment; filename=rk.xls"
+
+    return response
