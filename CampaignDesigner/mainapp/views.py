@@ -1,7 +1,9 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.shortcuts import get_object_or_404
 from .forms import KeyWordsForm
+from .models import Campaign, Frases
 import xlwt
 
 
@@ -9,17 +11,16 @@ def main(request):
     return render(request, 'mainapp/index.html',)
 
 
-def first_page(request):
-    form = KeyWordsForm(request.POST)
-    if request.method == 'POST':
-        if form.is_valid():
-            return HttpResponseRedirect(reverse('main:second_page'))
-    else:
-        form = KeyWordsForm()
-    return render(request, 'mainapp/first_page.html', {'form': form})
+# создаем кампанию в базе после нажатия на кнопку "создать РК" на главной
+def campaign_create(request):
+    new_campaign = Campaign(user=request.user)
+    new_campaign.save()
+    # перенаправляем на первую страницу и передаем id кампании
+    return HttpResponseRedirect(reverse('mainapp:first_page',
+                                        args=[new_campaign.id]))
 
 
-def second_page(request):
+def first_page(request, pk):
     if request.method == "POST":
         form = KeyWordsForm(request.POST)
         if form.is_valid():
@@ -40,21 +41,31 @@ def second_page(request):
             for keyword in keywords_split:
                 negative_keywords.append("{} {}".format(keyword, " ".join("-" + j for j in uncommon_keywords if j.lower() not in keyword.lower())))
 
-            wb = xlwt.Workbook(encoding='utf-8')
-            ws = wb.add_sheet('Sheet1')
-            columns = ['Фразы с минус словами', ]                           # титульные колонки
-            row_num = 0
-            for col_num in range(len(columns)):
-                ws.write(row_num, col_num, columns[col_num])                # запись титульников в таблицу
-            for i, e in enumerate(negative_keywords):                       # запись минус слов в таблицу
-                ws.write(i + 1, 0, e)
-            name = "spreadsheet.xls"
-            wb.save(name)
+            # получаем по id кампанию из бд
+            campaign = get_object_or_404(Campaign, pk=pk)
+            # и записываем фразы в бд
+            for keyword in negative_keywords:
+                new_frase = Frases(campaign=campaign)
+                new_frase.frase = keyword
+                new_frase.save()
+            print('3')
+            return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
     else:
-        return HttpResponseRedirect(reverse('main:first_page'))
-
-    context = {
-        "upper_keywords": upper_keywords,
+        form = KeyWordsForm()
+    content = {
+        'form': form,
+        'pk': pk,
     }
+    return render(request, 'mainapp/first_page.html', content)
 
-    return render(request, 'mainapp/second_page.html', context)
+
+def second_page(request, pk):
+    return render(request, 'mainapp/second_page.html')
+
+
+def third_page(request, pk):
+    pass
+
+
+def fourth_page(request, pk):
+    pass
