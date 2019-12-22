@@ -13,6 +13,8 @@ urlpatterns = [
          name='second_page'),
     path('campaign/create/<int:pk>/third/', mainapp.third_page,
          name='third_page'),
-    path('campaing/<int:pk>/download/', mainapp.fourth_page,
-         name='foutrh_page'),
+    path('campaing/create/<int:pk>/finish/', mainapp.fourth_page,
+         name='fourth_page'),
+    path('campaing/<int:pk>/download/xls', mainapp.download_xls,
+         name='download_xls'),
 ]

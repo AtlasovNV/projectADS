@@ -59,7 +59,8 @@ class Frases (models.Model):
 
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     additional_ad = models.CharField(max_length=1,
-                                     choices=ADDITIONAL_AD_CHOICES)
+                                     choices=ADDITIONAL_AD_CHOICES,
+                                     blank=True)
     frase = models.CharField(max_length=100)
     region = models.ForeignKey('Regions', on_delete=models.CASCADE,
                                null=True)

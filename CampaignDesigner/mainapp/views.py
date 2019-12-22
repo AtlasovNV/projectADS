@@ -2,9 +2,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
-from .forms import KeyWordsForm
-from .models import Campaign, Frases
-import xlwt
+from .forms import KeyWordsForm, FastLinkAndOther
+from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions
+import xlsxwriter
 
 
 def main(request):
@@ -48,7 +48,7 @@ def first_page(request, pk):
                 new_frase = Frases(campaign=campaign)
                 new_frase.frase = keyword
                 new_frase.save()
-            print('3')
+
             return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
     else:
         form = KeyWordsForm()
@@ -64,8 +64,79 @@ def second_page(request, pk):
 
 
 def third_page(request, pk):
-    pass
+    if request.method == "POST":
+        form = FastLinkAndOther(request.POST)
+        if form.is_valid():
+            link = form.cleaned_data['link']
+            sangezeigt_link = form.cleaned_data['sangezeigt_link']
+            text = form.cleaned_data['text']
+            header_fast_link_1 = form.cleaned_data['header_fast_link_1']
+            text_fast_link_1 = form.cleaned_data['text_fast_link_1']
+            link_fast_link_1 = form.cleaned_data['link_fast_link_1']
+            verfeinerungen_1 = form.cleaned_data['verfeinerungen_1']
+            header_fast_link_2 = form.cleaned_data['header_fast_link_2']
+            text_fast_link_2 = form.cleaned_data['text_fast_link_2']
+            link_fast_link_2 = form.cleaned_data['link_fast_link_2']
+            verfeinerungen_2 = form.cleaned_data['verfeinerungen_2']
+            header_fast_link_3 = form.cleaned_data['header_fast_link_3']
+            text_fast_link_3 = form.cleaned_data['text_fast_link_3']
+            link_fast_link_3 = form.cleaned_data['link_fast_link_3']
+            verfeinerungen_3 = form.cleaned_data['verfeinerungen_3']
+            header_fast_link_4 = form.cleaned_data['header_fast_link_4']
+            text_fast_link_4 = form.cleaned_data['text_fast_link_4']
+            link_fast_link_4 = form.cleaned_data['link_fast_link_4']
+            verfeinerungen_4 = form.cleaned_data['verfeinerungen_4']
+            region = form.cleaned_data['region']
+            bewerten = form.cleaned_data['bewerten']
+
+            new_link = SharedDataGroup()
+            new_link.link = link
+            new_link.sangezeigt_link = sangezeigt_link
+            new_link.text = text
+            new_link.bewerten = bewerten
+            new_link.save()
+
+            new_fast_link = FastLink()
+            new_fast_link.header_fast_link_1 = header_fast_link_1
+            new_fast_link.header_fast_link_2 = header_fast_link_2
+            new_fast_link.header_fast_link_3 = header_fast_link_3
+            new_fast_link.header_fast_link_4 = header_fast_link_4
+            new_fast_link.text_fast_link_1 = text_fast_link_1
+            new_fast_link.text_fast_link_2 = text_fast_link_2
+            new_fast_link.text_fast_link_3 = text_fast_link_3
+            new_fast_link.text_fast_link_4 = text_fast_link_4
+            new_fast_link.link_fast_link_1 = link_fast_link_1
+            new_fast_link.link_fast_link_2 = link_fast_link_2
+            new_fast_link.link_fast_link_3 = link_fast_link_3
+            new_fast_link.link_fast_link_4 = link_fast_link_4
+            new_fast_link.verfeinerungen_1 = verfeinerungen_1
+            new_fast_link.verfeinerungen_2 = verfeinerungen_2
+            new_fast_link.verfeinerungen_3 = verfeinerungen_3
+            new_fast_link.verfeinerungen_4 = verfeinerungen_4
+            new_fast_link.save()
+
+            new_region = Regions()
+            new_region.region = region
+            new_region.save()
+
+            frases = Frases.objects.filter(campaign__pk=pk)
+            for frase in frases:
+                frase.shared_data_group_id = new_link.id
+                frase.fast_link_id = new_fast_link.id
+                frase.region_id = new_region.id
+                frase.save()
+
+            return HttpResponseRedirect(
+                reverse('mainapp:fourth_page', args=[pk]))
+    else:
+        form = FastLinkAndOther()
+    content = {
+        'form': form,
+        'pk': pk,
+        }
+    return render(request, 'mainapp/third_page.html', content)
 
 
 def fourth_page(request, pk):
-    pass
+    return render(request, 'mainapp/fourth_page.html', {'pk': pk})
+
