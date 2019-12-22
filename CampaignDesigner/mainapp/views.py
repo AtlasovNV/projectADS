@@ -13,11 +13,13 @@ def main(request):
 
 # создаем кампанию в базе после нажатия на кнопку "создать РК" на главной
 def campaign_create(request):
-    new_campaign = Campaign(user=request.user)
-    new_campaign.save()
-    # перенаправляем на первую страницу и передаем id кампании
-    return HttpResponseRedirect(reverse('mainapp:first_page',
-                                        args=[new_campaign.id]))
+    if request.user.is_authenticated:
+        new_campaign = Campaign(user=request.user)
+        new_campaign.save()
+        # перенаправляем на первую страницу и передаем id кампании
+        return HttpResponseRedirect(reverse('mainapp:first_page',
+                                            args=[new_campaign.id]))
+    return HttpResponseRedirect(reverse('auth:login'))
 
 
 def first_page(request, pk):
