@@ -1,15 +1,16 @@
 import mimetypes
 import os
 
+from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 
+from .titles import title_slice
 from .savexls import savexls
 from .forms import KeyWordsForm, FastLinkAndOther
-from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions
-
+from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions, Header
 
 
 def main(request):
@@ -39,7 +40,6 @@ def first_page(request, pk):
 
             keywords_split = list(filter(None, keywords_split))             # список ключевых слов по строчкам
             keywords_list = list(filter(None, keywords_list))               # список слов из ключевых слов
-            upper_keywords = [keyword.capitalize() for keyword in keywords_split]
 
             for keyword in keywords_list:
                 if keyword not in uncommon_keywords:
@@ -56,6 +56,24 @@ def first_page(request, pk):
                 new_frase.frase = keyword
                 new_frase.save()
 
+            headers_list = []
+            for keyword in keywords_split:
+                headers_list.append(title_slice(keyword))
+
+            second_headers = [header[1] for header in headers_list]
+            max_second_header = max(second_headers, key=len)
+
+            for headers in headers_list:  # Запись заголовков в базу
+                header_row = Header()
+                if headers[1] != '-':
+                    header_row.header1 = headers[0]
+                    header_row.header2 = headers[1]
+                    header_row.save()
+                else:
+                    header_row.header1 = headers[0]
+                    header_row.header2 = max_second_header
+                    header_row.save()
+
             return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
     else:
         form = KeyWordsForm()
@@ -67,7 +85,19 @@ def first_page(request, pk):
 
 
 def second_page(request, pk):
-    return render(request, 'mainapp/second_page.html')
+    HeaderFormSet = modelformset_factory(Header, fields=('header1', 'header2'), extra=0)
+    if request.method == 'POST':
+        formset = HeaderFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect(reverse('mainapp:third_page', args=[pk]))
+    else:
+        formset = HeaderFormSet()
+    content = {
+        'pk': pk,
+        'formset': formset,
+    }
+    return render(request, 'mainapp/second_page.html', content)
 
 
 def third_page(request, pk):
