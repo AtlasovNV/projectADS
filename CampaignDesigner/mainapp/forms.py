@@ -1,32 +1,32 @@
 from django import forms
-from mainapp.models import Template
 
 
 class KeyWordsForm(forms.Form):
     keywords = forms.CharField(widget=forms.Textarea, max_length=2000)
 
 
-class TemplateCreateForm(forms.ModelForm):
-    class Meta:
-        model = Template
-        fields = ('url', 'displayed_url', 'headline_1', 'headline_2', 'text', 'fast_url_1', 'description_1',
-                  'fast_url_2', 'description_2', 'fast_url_3', 'description_3', 'fast_url_4', 'description_4',
-                  'refinements')
-        labels = {
-            'url': 'Введите ссылку на сайт',
-            'displayed_url': 'Введите отображаемую ссылку',
-            'headline_1': 'Введите первый заголовок',
-            'headline_2': 'Введите второй заголовок',
-            'text': 'Введите текст объявления',
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(TemplateCreateForm, self).__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
-            field.help_text = ''
-
-
+class FastLinkAndOther(forms.Form):
+    link = forms.URLField(label='Введите ссылку на сайт', max_length=200)
+    sangezeigt_link = forms.CharField(label='Введите отоброжаемый текст ссылки', max_length=20)
+    text = forms.CharField(label='Введите текст объявления', max_length=100)
+    header_fast_link_1 = forms.CharField(label='Введите заголовок быстрой ссылки №1', max_length=30)
+    text_fast_link_1 = forms.CharField(label='Введите текст быстрой ссылки №1', max_length=60)
+    link_fast_link_1 = forms.URLField(label='Введите адрес быстрой ссылки №1', max_length=200)
+    verfeinerungen_1 = forms.CharField(label='Введите описание быстрой ссылки №1', max_length=25)
+    header_fast_link_2 = forms.CharField(label='Введите заголовок быстрой ссылки №2', max_length=30)
+    text_fast_link_2 = forms.CharField(label='Введите текст быстрой ссылки №2', max_length=60)
+    link_fast_link_2 = forms.URLField(label='Введите адрес быстрой ссылки №2', max_length=200)
+    verfeinerungen_2 = forms.CharField(label='Введите описание быстрой ссылки №2', max_length=25)
+    header_fast_link_3 = forms.CharField(label='Введите заголовок быстрой ссылки №3', max_length=30)
+    text_fast_link_3 = forms.CharField(label='Введите текст быстрой ссылки №3', max_length=60)
+    link_fast_link_3 = forms.URLField(label='Введите адрес быстрой ссылки №3', max_length=200)
+    verfeinerungen_3 = forms.CharField(label='Введите описание быстрой ссылки №3', max_length=25)
+    header_fast_link_4 = forms.CharField(label='Введите заголовок быстрой ссылки №4', max_length=30)
+    text_fast_link_4 = forms.CharField(label='Введите текст быстрой ссылки №4', max_length=60)
+    link_fast_link_4 = forms.URLField(label='Введите адрес быстрой ссылки №4', max_length=200)
+    verfeinerungen_4 = forms.CharField(label='Введите описание быстрой ссылки №4', max_length=25)
+    region = forms.CharField(max_length=50)
+    bewerten = forms.DecimalField(max_digits=6, decimal_places=2)
 
 
 
