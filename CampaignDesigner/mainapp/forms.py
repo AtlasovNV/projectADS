@@ -2,7 +2,7 @@ from django import forms
 
 
 class KeyWordsForm(forms.Form):
-    keywords = forms.CharField(widget=forms.Textarea, max_length=2000)
+    keywords = forms.CharField(label='Вставьте ключевые слова в форму', widget=forms.Textarea, max_length=2000)
 
 
 class FastLinkAndOther(forms.Form):
