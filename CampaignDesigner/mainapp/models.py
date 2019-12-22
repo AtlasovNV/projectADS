@@ -65,7 +65,7 @@ class Frases (models.Model):
                                null=True)
     name_group = models.ForeignKey('GroupName', on_delete=models.CASCADE,
                                    null=True)
-    headers = models.ForeignKey('Header', on_delete=models.CASCADE,
+    headers = models.ForeignKey(Header, on_delete=models.CASCADE,
                                 null=True)
     shared_data_group = models.ForeignKey('SharedDataGroup',
                                           on_delete=models.CASCADE,

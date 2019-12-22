@@ -1,9 +1,12 @@
+from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+
+from .titles import title_slice
 from .forms import KeyWordsForm
-from .models import Campaign, Frases
+from .models import Campaign, Frases, Header
 from .savexls import *
 
 
@@ -49,6 +52,25 @@ def first_page(request, pk):
                 new_frase.frase = keyword
                 new_frase.save()
             print('3')
+
+            headers_list = []
+            for keyword in keywords_split:
+                headers_list.append(title_slice(keyword))
+
+            second_headers = [header[1] for header in headers_list]
+            max_second_header = max(second_headers, key=len)
+
+            for headers in headers_list:  # Запись заголовков в базу
+                header_row = Header()
+                if headers[1] != '-':
+                    header_row.header1 = headers[0]
+                    header_row.header2 = headers[1]
+                    header_row.save()
+                else:
+                    header_row.header1 = headers[0]
+                    header_row.header2 = max_second_header
+                    header_row.save()
+
             return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
     else:
         form = KeyWordsForm()
@@ -60,11 +82,19 @@ def first_page(request, pk):
 
 
 def second_page(request, pk):
-    return render(request, 'mainapp/second_page.html')
+    HeaderFormSet = modelformset_factory(Header, fields=('header1', 'header2'), extra=0)
+    if request.method == 'POST':
+        formset = HeaderFormSet(request.POST)
+        if formset.is_valid():
+            formset.save()
+            return HttpResponseRedirect(reverse('mainapp:third_page', args=[pk]))
+    else:
+        formset = HeaderFormSet()
+    return render(request, 'mainapp/second_page.html', {'pk': pk, 'formset': formset})
 
 
 def third_page(request, pk):
-    pass
+    return render(request, 'mainapp/third_page.html')
 
 
 def fourth_page(request, pk):
