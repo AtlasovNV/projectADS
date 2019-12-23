@@ -10,11 +10,12 @@ from django.shortcuts import get_object_or_404
 from .titles import title_slice
 from .savexls import savexls
 from .forms import KeyWordsForm, FastLinkAndOther
-from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions, Header
+from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions, \
+    Header
 
 
 def main(request):
-    return render(request, 'mainapp/index.html',)
+    return render(request, 'mainapp/index.html', )
 
 
 # создаем кампанию в базе после нажатия на кнопку "создать РК" на главной
@@ -36,17 +37,22 @@ def first_page(request, pk):
             uncommon_keywords = []
             negative_keywords = []
             keywords_list = keywords_str.split()
-            keywords_split = [keyword.strip() for keyword in keywords_str.splitlines()]
+            keywords_split = [keyword.strip() for keyword in
+                              keywords_str.splitlines()]
 
-            keywords_split = list(filter(None, keywords_split))             # список ключевых слов по строчкам
-            keywords_list = list(filter(None, keywords_list))               # список слов из ключевых слов
+            keywords_split = list(filter(None,
+                                         keywords_split))  # список ключевых слов по строчкам
+            keywords_list = list(
+                filter(None, keywords_list))  # список слов из ключевых слов
 
             for keyword in keywords_list:
                 if keyword not in uncommon_keywords:
                     uncommon_keywords.append(keyword)
 
             for keyword in keywords_split:
-                negative_keywords.append("{} {}".format(keyword, " ".join("-" + j for j in uncommon_keywords if j.lower() not in keyword.lower())))
+                negative_keywords.append("{} {}".format(keyword, " ".join(
+                    "-" + j for j in uncommon_keywords if
+                    j.lower() not in keyword.lower())))
 
             # получаем по id кампанию из бд
             campaign = get_object_or_404(Campaign, pk=pk)
@@ -63,18 +69,26 @@ def first_page(request, pk):
             second_headers = [header[1] for header in headers_list]
             max_second_header = max(second_headers, key=len)
 
-            for headers in headers_list:  # Запись заголовков в базу
+            frases = Frases.objects.filter(campaign__pk=pk)
+
+            for headers, frase in zip(headers_list,
+                                      frases):  # Запись заголовков в базу
                 header_row = Header()
                 if headers[1] != '-':
                     header_row.header1 = headers[0]
                     header_row.header2 = headers[1]
                     header_row.save()
+                    frase.headers_id = header_row.id
+                    frase.save()
                 else:
                     header_row.header1 = headers[0]
                     header_row.header2 = max_second_header
                     header_row.save()
+                    frase.headers_id = header_row.id
+                    frase.save()
 
-            return HttpResponseRedirect(reverse('mainapp:second_page', args=[pk]))
+            return HttpResponseRedirect(
+                reverse('mainapp:second_page', args=[pk]))
     else:
         form = KeyWordsForm()
     content = {
@@ -85,14 +99,18 @@ def first_page(request, pk):
 
 
 def second_page(request, pk):
-    HeaderFormSet = modelformset_factory(Header, fields=('header1', 'header2'), extra=0)
+    HeaderFormSet = modelformset_factory(Header,
+                                         fields=('header1', 'header2'),
+                                         extra=0)
     if request.method == 'POST':
-        formset = HeaderFormSet(request.POST)
+        formset = HeaderFormSet(request.POST,
+                        queryset=Header.objects.filter(frases__campaign_id=pk))
         if formset.is_valid():
             formset.save()
-            return HttpResponseRedirect(reverse('mainapp:third_page', args=[pk]))
+            return HttpResponseRedirect(
+                reverse('mainapp:third_page', args=[pk]))
     else:
-        formset = HeaderFormSet()
+        formset = HeaderFormSet(queryset=Header.objects.filter(frases__campaign_id=pk))
     content = {
         'pk': pk,
         'formset': formset,
@@ -170,7 +188,7 @@ def third_page(request, pk):
     content = {
         'form': form,
         'pk': pk,
-        }
+    }
     return render(request, 'mainapp/third_page.html', content)
 
 
@@ -180,14 +198,17 @@ def fourth_page(request, pk):
 
 def download_xls(request, pk):
     savexls(pk)
-    fp = open(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx', "rb")
+    fp = open(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx',
+              "rb")
     response = HttpResponse(fp.read())
     fp.close()
-    file_type = mimetypes.guess_type(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx')
+    file_type = mimetypes.guess_type(
+        f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx')
     if file_type is None:
         file_type = 'application/octet-stream'
     response['Content-Type'] = file_type
-    response['Content-Length'] = str(os.stat(f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx').st_size)
+    response['Content-Length'] = str(os.stat(
+        f'static/campaign/Рекламная кампания Яндекс Директ_{pk}.xlsx').st_size)
     response['Content-Disposition'] = "attachment; filename=rk.xls"
 
     return response
