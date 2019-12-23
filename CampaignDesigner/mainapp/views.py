@@ -11,7 +11,7 @@ from .titles import title_slice
 from .savexls import savexls
 from .forms import KeyWordsForm, FastLinkAndOther
 from .models import Campaign, Frases, SharedDataGroup, FastLink, Regions, \
-    Header
+    Header, GroupName
 
 
 def main(request):
@@ -60,6 +60,12 @@ def first_page(request, pk):
             for keyword in negative_keywords:
                 new_frase = Frases(campaign=campaign)
                 new_frase.frase = keyword
+
+                new_group_name = GroupName()
+                new_group_name.name_group = keyword
+                new_group_name.save()
+
+                new_frase.name_group_id = new_group_name.id
                 new_frase.save()
 
             headers_list = []
