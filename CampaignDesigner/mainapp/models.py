@@ -14,8 +14,8 @@ class GroupName(models.Model):
 
 
 class Header (models.Model):
-    header1 = models.CharField(max_length=50)
-    header2 = models.CharField(max_length=40)
+    header1 = models.CharField(verbose_name='Заголовок 1', max_length=50)
+    header2 = models.CharField(verbose_name='Заголовок 2', max_length=40)
 
 
 class SharedDataGroup(models.Model):
