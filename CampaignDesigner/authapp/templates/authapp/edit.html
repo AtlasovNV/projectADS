@@ -1,0 +1,15 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+
+{% block content %}
+    <form class="form-horizontal" action="{% url 'auth:edit' %}" method="POST"
+          enctype="multipart/form-data">
+              {% csrf_token %}
+              {{ edit_form.as_p}}
+          <input class="form-control" type="submit" value="сохранить">
+    </form>
+    <button class="brn brn-round form-control last">
+        <a href="{% url 'mainapp:index' %}">на главную</a>
+    </button>
+    <div class="user-avatar"><img src="/media/{{ user.avatar}}"></div>
+{% endblock %}

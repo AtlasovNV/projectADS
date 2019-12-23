@@ -8,4 +8,7 @@ urlpatterns = [
     path('login/', authapp.login, name='login'),
     path('logout/', authapp.logout, name='logout'),
     path('registration/', authapp.registration, name='registration'),
+    # path('read/', authapp.read, name='read'),
+    path('edit/', authapp.edit, name='edit'),
+    # path('delete/', authapp.delete, name='delete')
 ]
