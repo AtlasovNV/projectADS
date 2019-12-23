@@ -5,6 +5,7 @@
     <br>
     <br>
     <h2>Шаг 1</h2>
+    <h3>Вставьте ключевые слова в форму</h3>
     <form action="{% url 'mainapp:first_page' pk%}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
