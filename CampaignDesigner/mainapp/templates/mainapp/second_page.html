@@ -1,15 +1,17 @@
+{% extends 'mainapp/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>
-        {% block title %}
-            {{ title|capfirst }}
-        {% endblock %}
-    </title>
-</head>
-<body>
-        OK!
-</body>
-</html>
+{% block content %}
+    <br>
+    <br>
+    <br>
+<form action="{% url 'mainapp:second_page' pk %}" method="post" >
+    {{ formset.management_form }}
+    {% csrf_token %}
+    {% for form in formset %}
+        <div class="header">{{ form }}</div>
+    {% endfor %}
+
+
+    <input type="submit" value="Отправить" style="margin-left: 317px;">
+</form>
+{% endblock %}
