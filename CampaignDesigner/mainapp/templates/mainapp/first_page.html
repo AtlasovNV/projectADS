@@ -4,10 +4,11 @@
     <br>
     <br>
     <br>
-    <br>
+    <h2>Шаг 1</h2>
+    <h3>Вставьте ключевые слова в форму</h3>
     <form action="{% url 'mainapp:first_page' pk%}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Отправить">
+        <input type="submit" value="Перейти на шаг №2" class="btn btn-info">
     </form>
 {% endblock %}

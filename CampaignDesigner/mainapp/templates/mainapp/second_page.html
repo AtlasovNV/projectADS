@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-        OK!
-
-</body>
-</html>
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <h2>Шаг 2</h2>
+    <h3>Отредактируйте заголовки объявлений</h3>
+<form action="{% url 'mainapp:second_page' pk %}" method="post" >
+    {{ formset.management_form }}
+    {% csrf_token %}
+    {% for form in formset %}
+        <div class="header">{{ form }}</div>
+    {% endfor %}
+    <input type="submit" value="Отправить" style="margin-left: 317px;">
+</form>
+{% endblock %}

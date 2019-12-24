@@ -1,0 +1,13 @@
+{% extends 'mainapp/base.html' %}
+{% load static %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <h2>Шаг 3</h2>
+    <form action="{% url 'mainapp:third_page' pk%}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Перейти к скачиванию кампании" class="btn btn-info">
+    </form>
+{% endblock %}
