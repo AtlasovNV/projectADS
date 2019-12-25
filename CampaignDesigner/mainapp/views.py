@@ -134,19 +134,19 @@ def third_page(request, pk):
             header_fast_link_1 = form.cleaned_data['header_fast_link_1']
             text_fast_link_1 = form.cleaned_data['text_fast_link_1']
             link_fast_link_1 = form.cleaned_data['link_fast_link_1']
-            verfeinerungen_1 = form.cleaned_data['verfeinerungen_1']
+            # verfeinerungen_1 = form.cleaned_data['verfeinerungen_1']
             header_fast_link_2 = form.cleaned_data['header_fast_link_2']
             text_fast_link_2 = form.cleaned_data['text_fast_link_2']
             link_fast_link_2 = form.cleaned_data['link_fast_link_2']
-            verfeinerungen_2 = form.cleaned_data['verfeinerungen_2']
+            # verfeinerungen_2 = form.cleaned_data['verfeinerungen_2']
             header_fast_link_3 = form.cleaned_data['header_fast_link_3']
             text_fast_link_3 = form.cleaned_data['text_fast_link_3']
             link_fast_link_3 = form.cleaned_data['link_fast_link_3']
-            verfeinerungen_3 = form.cleaned_data['verfeinerungen_3']
+            # verfeinerungen_3 = form.cleaned_data['verfeinerungen_3']
             header_fast_link_4 = form.cleaned_data['header_fast_link_4']
             text_fast_link_4 = form.cleaned_data['text_fast_link_4']
             link_fast_link_4 = form.cleaned_data['link_fast_link_4']
-            verfeinerungen_4 = form.cleaned_data['verfeinerungen_4']
+            # verfeinerungen_4 = form.cleaned_data['verfeinerungen_4']
             region = form.cleaned_data['region']
             bewerten = form.cleaned_data['bewerten']
 
@@ -170,10 +170,6 @@ def third_page(request, pk):
             new_fast_link.link_fast_link_2 = link_fast_link_2
             new_fast_link.link_fast_link_3 = link_fast_link_3
             new_fast_link.link_fast_link_4 = link_fast_link_4
-            new_fast_link.verfeinerungen_1 = verfeinerungen_1
-            new_fast_link.verfeinerungen_2 = verfeinerungen_2
-            new_fast_link.verfeinerungen_3 = verfeinerungen_3
-            new_fast_link.verfeinerungen_4 = verfeinerungen_4
             new_fast_link.save()
 
             new_region = Regions()
